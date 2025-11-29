@@ -1,0 +1,9 @@
+@media (max-width: 600px) {
+  .search-section input {
+    width: 100%;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}

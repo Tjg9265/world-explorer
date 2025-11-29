@@ -1,0 +1,91 @@
+/* ================================
+   THEME COLOR VARIABLES
+   ================================ */
+:root {
+  --navy: #0B1D36;        /* Header, footer, nav bar */
+  --light-blue: #3FA9F5;  /* Buttons, accents */
+  --white: #FFFFFF;       /* Background, text contrast */
+  --soft-gray: #F2F2F2;   /* Cards, section dividers */
+  --dark-gray: #222222;   /* Body text */
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--soft-gray);
+  color: var(--dark-gray);
+}
+
+.main-header,
+.main-footer {
+  background: var(--navy);
+  color: var(--white);
+  text-align: center;
+  padding: 1rem;
+}
+
+.search-section {
+  padding: 1.5rem;
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  background: var(--white);
+}
+
+.search-section input {
+  width: 70%;
+  padding: .8rem;
+  font-size: 1rem;
+}
+
+.search-section button {
+  padding: .8rem 1rem;
+  background: var(--light-blue);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+}
+
+.country-header {
+  text-align: center;
+  background: var(--white);
+  padding: 1rem;
+}
+
+.country-header img {
+  max-width: 150px;
+  border-radius: 8px;
+  margin-top: .5rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  text-align: center;
+  padding: .7rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.placeholder-card {
+  opacity: .7;
+}
+
+.placeholder-image {
+  width: 100%;
+  height: 80px;
+  background: #ddd;
+  border-radius: 10px;
+}

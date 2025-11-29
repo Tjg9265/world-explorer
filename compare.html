@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Countries - World Explorer</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+  <header class="main-header">
+    <h1>World Explorer</h1>
+  </header>
+
+  <main id="app">
+    <section class="compare-header">
+      <h2>Compare Countries</h2>
+      <p>Select two countries and view their details side-by-side.</p>
+
+      <div class="compare-fields">
+        <input type="text" id="compareA" placeholder="First country...">
+        <input type="text" id="compareB" placeholder="Second country...">
+        <button id="compareBtn">Compare</button>
+      </div>
+    </section>
+
+    <section id="compareContainer" class="compare-grid"></section>
+  </main>
+
+  <footer class="main-footer">
+    <p>© 2025 World Explorer</p>
+  </footer>
+
+  <script type="module" src="js/compare.js"></script>
+</body>
+</html>

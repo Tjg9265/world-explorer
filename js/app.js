@@ -1,15 +1,11 @@
+import { initAPIs } from "./apis.js";
+import { renderFavorites } from "./favorites.js";
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("World Explorer loaded.");
+  initAPIs();
 
-  const input = document.getElementById("countrySearchInput");
-  const button = document.getElementById("countrySearchBtn");
-
-  if (button) {
-    button.addEventListener("click", () => {
-      const query = input.value.trim();
-      if (query.length > 0) {
-        window.location.href = `country.html?name=${query}`;
-      }
-    });
+  // Only run favorites logic on the favorites page
+  if (document.querySelector("#favorites-list")) {
+    renderFavorites();
   }
 });

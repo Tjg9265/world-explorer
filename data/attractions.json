@@ -1,0 +1,34 @@
+[
+  {
+    "id": "eiffel",
+    "country": "France",
+    "city": "Paris",
+    "name": "Eiffel Tower",
+    "img": "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+    "desc": "Iconic tower offering stunning views of Paris."
+  },
+  {
+    "id": "liberty",
+    "country": "United States",
+    "city": "New York",
+    "name": "Statue of Liberty",
+    "img": "https://images.pexels.com/photos/2903869/pexels-photo-2903869.jpeg",
+    "desc": "World-famous symbol of freedom overlooking NYC."
+  },
+  {
+    "id": "sensoji",
+    "country": "Japan",
+    "city": "Tokyo",
+    "name": "Sensō-ji Temple",
+    "img": "https://images.pexels.com/photos/2082109/pexels-photo-2082109.jpeg",
+    "desc": "Ancient temple known for its vibrant Kaminarimon."
+  },
+  {
+    "id": "christ",
+    "country": "Brazil",
+    "city": "Rio de Janeiro",
+    "name": "Christ the Redeemer",
+    "img": "https://images.pexels.com/photos/2868242/pexels-photo-2868242.jpeg",
+    "desc": "Iconic Art Deco statue atop Mount Corcovado."
+  }
+]

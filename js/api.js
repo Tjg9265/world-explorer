@@ -1,5 +1,23 @@
 import { addFavorite } from "./favorites.js";
 
+// 🔍 NEW FUNCTION — Needed for COUNTRY + COMPARE
+export async function getWikiSummary(title) {
+  const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
+    title
+  )}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Wiki Summary Error:", err);
+    return null;
+  }
+}
+
+// 📰 WIKIPEDIA NEWS FEED
 export async function getWikiNews() {
   const today = new Date();
   const y = today.getFullYear();

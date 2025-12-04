@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Country Details - World Explorer</title>
+  <meta charset="UTF-8">
+  <title>Country Details</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
 </head>
 
 <body>
-  <!-- Header -->
-  <header class="main-header">
-    <h1>World Explorer</h1>
-  </header>
 
-  <!-- Page Content -->
-  <main id="app">
-    <!-- Injected by country.js -->
-    <section class="loading-screen">
-      <p>Loading country details...</p>
-    </section>
-  </main>
+<header class="main-header">
+  <div class="header-content">
+    <img src="./assets/images/explorer_logo.png" class="site-logo" alt="Logo">
+    <h1>WORLD EXPLORER</h1>
 
-  <!-- Footer -->
-  <footer class="main-footer">
-    <p>© 2025 World Explorer</p>
-  </footer>
+    <!-- DARK MODE -->
+    <label class="theme-toggle">
+      <input type="checkbox" id="themeSwitch">
+      <span class="slider"></span>
+    </label>
+  </div>
 
-  <!-- JavaScript -->
-  <script type="module" src="./assets/js/country.js"></script>
-  <script type="module" src="./assets/js/app.js"></script>
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="compare.html">Compare</a>
+    <a href="favorites.html">Favorites</a>
+  </nav>
+</header>
+
+
+<!-- THIS IS REQUIRED! -->
+<main id="app"></main>
+
+
+<footer class="main-footer">
+  <p>© 2025 World Explorer</p>
+</footer>
+
+<script type="module" src="./js/country.js"></script>
+
 </body>
 </html>
+

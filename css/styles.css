@@ -1,11 +1,11 @@
 /* ================================
-   THEME COLOR VARIABLES
+   THEME COLOR VARIABLES (LIGHT MODE)
    ================================ */
 :root {
   --navy: #0B1D36;        /* Header, footer, nav bar */
   --light-blue: #3FA9F5;  /* Buttons, accents */
-  --white: #FFFFFF;       /* Background, text contrast */
-  --soft-gray: #F2F2F2;   /* Cards, section dividers */
+  --white: #FFFFFF;       /* Card backgrounds, text contrast */
+  --soft-gray: #F2F2F2;   /* Page background, section dividers */
   --dark-gray: #222222;   /* Body text */
 }
 
@@ -24,6 +24,11 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--soft-gray);
   color: var(--dark-gray);
+
+  /* Smooth theme transitions */
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 /* Layout wrapper for main content */
@@ -41,7 +46,54 @@ main {
   background: var(--navy);
   color: var(--white);
   text-align: center;
+  padding: 1.5rem 1rem;
+  position: relative;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.main-footer {
   padding: 1rem;
+}
+
+/* CENTER LOGO + TITLE (home header) */
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.header-brand .site-logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.header-brand h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Shared header content layout (favorites/compare pages) */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.site-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 6px;
 }
 
 .main-header h1 {
@@ -51,8 +103,9 @@ main {
   text-transform: uppercase;
 }
 
+/* NAVIGATION */
 .main-nav {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   display: flex;
   gap: 0.75rem;
   justify-content: center;
@@ -66,7 +119,11 @@ main {
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.25);
-  transition: background 0.2s, color 0.2s, transform 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s,
+    border-color 0.2s;
 }
 
 .main-nav a:hover {
@@ -76,11 +133,119 @@ main {
 }
 
 /* ================================
+   HERO CONTENT (INSIDE HEADER)
+   ================================ */
+
+.hero-content-header {
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--white);
+  transition: color 0.35s ease;
+}
+
+.hero-content-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.hero-content-header p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.hero-btn {
+  display: inline-block;
+  background: var(--light-blue);
+  padding: 0.8rem 1.4rem;
+  color: var(--white);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition:
+    background-color 0.25s,
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.hero-btn:hover {
+  background: #2287cc;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(34,135,204,0.5);
+}
+
+/* (Optional) legacy hero class if used elsewhere */
+.hero {
+  background: url("./assets/images/explorer_banner.jpg") center/cover no-repeat;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+  padding: 2rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 4px solid var(--light-blue);
+}
+
+/* ================================
+   DARK MODE TOGGLE
+   ================================ */
+
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 45px;
+  height: 22px;
+  display: inline-block;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 22px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  transition: transform 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #3FA9F5;
+}
+
+input:checked + .slider:before {
+  transform: translateX(23px);
+}
+
+/* ================================
    GENERIC SECTIONS
    ================================ */
 
 .section {
   padding: 1.5rem 1rem;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 .section h2 {
@@ -96,7 +261,7 @@ main {
 }
 
 /* ================================
-   SEARCH BAR (if used on index)
+   SEARCH BAR / COUNTRY SEARCH
    ================================ */
 
 .search-section {
@@ -105,6 +270,9 @@ main {
   gap: 0.5rem;
   justify-content: center;
   background: var(--white);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 .search-section input {
@@ -113,6 +281,10 @@ main {
   font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .search-section button {
@@ -123,7 +295,10 @@ main {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .search-section button:hover {
@@ -132,14 +307,77 @@ main {
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
+/* Enhanced search layout (index) */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Suggestions dropdown */
+.suggestions {
+  position: absolute;
+  background: var(--white);
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: none;
+  z-index: 100;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.suggestions div {
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.suggestions div:hover {
+  background: #edf6ff;
+}
+
+/* Voice search button */
+.voice-btn {
+  background: #ff5252;
+  color: white;
+  border-radius: 6px;
+  padding: 0.7rem;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.voice-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255,82,82,0.6);
+}
+
 /* ================================
-   COUNTRY HEADER (detail pages)
+   COUNTRY HEADER (detail page)
    ================================ */
 
 .country-header {
   text-align: center;
   background: var(--white);
   padding: 1rem;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 .country-header img {
@@ -163,7 +401,7 @@ main {
 }
 
 /* ================================
-   CARD STYLES (news, attractions, favorites)
+   CARD STYLES (news, attractions, results, favorites)
    ================================ */
 
 .card {
@@ -172,8 +410,13 @@ main {
   text-align: left;
   padding: 0.9rem;
   box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .card:hover {
@@ -207,7 +450,7 @@ main {
   font-size: 0.85rem;
 }
 
-/* Placeholder skeleton card (optional) */
+/* Placeholder skeleton card */
 .placeholder-card {
   opacity: 0.7;
 }
@@ -235,7 +478,10 @@ main {
   font-weight: 500;
   background: var(--light-blue);
   color: var(--white);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
   box-shadow: 0 4px 12px rgba(63,169,245,0.35);
 }
 
@@ -256,6 +502,11 @@ main {
 .btn-remove:hover {
   background: #de4545;
   box-shadow: 0 7px 18px rgba(222,69,69,0.55);
+}
+
+.small-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
 }
 
 /* ================================
@@ -279,6 +530,10 @@ main {
   border-radius: 6px;
   border: 1px solid #ccc;
   min-width: 160px;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
 }
 
 #compare-results {
@@ -294,6 +549,11 @@ main {
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .flag {
@@ -301,6 +561,91 @@ main {
   border: 2px solid #eee;
   border-radius: 8px;
   margin-bottom: 0.5rem;
+}
+
+/* ================================
+   COUNTRY SEARCH EXTRAS (history, trending, geo)
+   ================================ */
+
+.history-box,
+.trending-box {
+  margin: 1rem 0;
+}
+
+.history-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.history-list span {
+  background: var(--light-blue);
+  color: #fff;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.small-cards .card {
+  padding: 0.5rem;
+}
+
+.small-cards img {
+  height: 60px;
+  object-fit: cover;
+}
+
+/* GEO BOX */
+.geo-box {
+  margin-top: 1rem;
+}
+
+/* ================================
+   MAP MODAL (Leaflet)
+   ================================ */
+
+.map-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px);
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.map-content {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.close-map {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.map {
+  height: 400px;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 1rem;
 }
 
 /* ================================
@@ -341,4 +686,153 @@ main {
   .main-header h1 {
     font-size: 1.7rem;
   }
+}
+
+/* ================================
+   DARK MODE — BLUE-TINT EXPLORER THEME
+   (Option C)
+   ================================ */
+
+body.dark-mode {
+  /* GLOBAL THEME VARIABLES OVERRIDE */
+  --navy: #020b17;          /* Header / Footer / Nav */
+  --white: #0a1628;         /* Card background */
+  --soft-gray: #030c16;     /* Body background */
+  --dark-gray: #e6f3ff;     /* Text (icy blue-white) */
+  --light-blue: #3FA9F5;    /* Keep original button blue */
+
+  background: var(--soft-gray);
+  color: var(--dark-gray);
+}
+
+/* HEADER + FOOTER */
+body.dark-mode .main-header,
+body.dark-mode .main-footer {
+  background: var(--navy);
+  color: var(--dark-gray);
+  border-bottom: 1px solid #0f2238;
+}
+
+/* NAV LINKS */
+body.dark-mode .main-nav a {
+  color: #cfe9ff;
+  border-color: rgba(255,255,255,0.15);
+}
+
+body.dark-mode .main-nav a:hover {
+  background: var(--light-blue);
+  color: #fff;
+}
+
+/* SECTIONS */
+body.dark-mode .section {
+  background: transparent;
+  color: var(--dark-gray);
+}
+
+/* CARDS & SURFACES */
+body.dark-mode .card,
+body.dark-mode .compare-card,
+body.dark-mode .map-content,
+body.dark-mode .country-header,
+body.dark-mode .small-cards .card {
+  background: var(--white);
+  color: var(--dark-gray);
+  border: 1px solid #0f2238;
+  box-shadow: 0 4px 18px rgba(12, 32, 56, 0.4);
+}
+
+/* INPUTS + SELECTS */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0f1b2e;
+  color: #e6f3ff;
+  border: 1px solid #1b3557;
+}
+
+body.dark-mode input::placeholder {
+  color: #55749a;
+}
+
+/* SUGGESTIONS DROPDOWN */
+body.dark-mode .suggestions {
+  background: #0a1628;
+  border-color: #0f2238;
+}
+
+body.dark-mode .suggestions div:hover {
+  background: #0f2238;
+}
+
+/* VOICE BUTTON */
+body.dark-mode .voice-btn {
+  background: #ff5252;
+  color: #fff;
+}
+
+/* HISTORY TAGS */
+body.dark-mode .history-list span {
+  background: var(--light-blue);
+  color: #fff;
+}
+
+/* MAP MODAL */
+body.dark-mode .map-modal {
+  background: rgba(2, 11, 23, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+body.dark-mode .map-content {
+  background: #0a1628;
+  border-color: #0f2238;
+}
+
+/* HERO + HEADER BRANDING TEXT */
+body.dark-mode .hero,
+body.dark-mode .hero-content-header,
+body.dark-mode .header-brand h1,
+body.dark-mode .header-content h1 {
+  color: #e6f3ff;
+}
+
+/* HERO BUTTON */
+body.dark-mode .hero-btn {
+  background: var(--light-blue);
+  color: #fff;
+}
+
+body.dark-mode .hero-btn:hover {
+  background: #2287cc;
+}
+
+/* COMPARE SELECTS */
+body.dark-mode .compare-controls select {
+  background: #0f1b2e;
+  color: #e6f3ff;
+  border: 1px solid #1b3557;
+}
+
+/* REMOVE BUTTONS */
+body.dark-mode .btn-remove {
+  background: #c84343;
+  box-shadow: 0 4px 12px rgba(200,67,67,0.3);
+}
+
+body.dark-mode .btn-remove:hover {
+  background: #a83232;
+}
+
+/* GENERAL BUTTONS KEEP BLUE */
+body.dark-mode button,
+body.dark-mode .btn,
+body.dark-mode .btn-fav,
+body.dark-mode #compare-btn {
+  background: var(--light-blue);
+  color: #fff;
+}
+
+/* LINKS */
+body.dark-mode a {
+  color: #8bc7ff;
 }

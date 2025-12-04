@@ -1,32 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meat name="viewport" content=""width=device-width, initial scale="1.0" />
-        <title>World Explorer</title>
-        <link rel="stylesheet" href="css/styles.css">
-        <link rel="stylesheet" href="css/components.css">
-        <link rel="stylesheet" href="css/responsive.css">
-    </head>
-    <body>
-        <header class ="main-header">
-            <h1>World Explorer</h1>
-        </header>
-        <main id="app">
-            <section class="search-section">
-                <input
-                    type="text"
-                    id="countrySearchInput"
-                    placeholder="Search for a country..."
-                >
-                <button id="countrySearchBtn">Search</button>
-            </section>
-            <section id="searchResults"></section>
-        </main>
-        <footer class="main-footer">
-            <p>© 2025 World Explorer</p>
-        </footer>
-        <script type="module" src="./assets/js/app.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <title>World Explorer – Home</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
 
-    </body>
+<body>
+
+<header class="main-header">
+  <!-- DARK MODE TOGGLE -->
+  <label class="theme-toggle">
+    <input type="checkbox" id="themeSwitch">
+    <span class="slider"></span>
+  </label>
+
+  <!-- CENTERED BRAND -->
+  <div class="header-brand">
+    <img src="./assets/images/explorer_logo.png" class="site-logo" alt="Logo">
+    <h1>WORLD EXPLORER</h1>
+  </div>
+
+  <!-- HERO CONTENT -->
+  <div class="hero-content-header">
+    <h2>Explore the World</h2>
+    <p>Discover countries, news, attractions, and more with World Explorer.</p>
+    <a href="#countrySearchInput" class="hero-btn">Start Searching</a>
+  </div>
+
+  <!-- NAV -->
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="compare.html">Compare</a>
+    <a href="favorites.html">Favorites</a>
+  </nav>
+</header>
+
+
+<main>
+
+  <!-- ===============================================
+       COUNTRY SEARCH SECTION  (ONE PLACE ONLY)
+       =============================================== -->
+  <section class="section">
+    <h2>Search for a Country</h2>
+    <p class="section-description">Find details for any country in the world.</p>
+
+    <div class="search-section search-wrapper">
+
+      <!-- SEARCH INPUT + SUGGESTIONS -->
+      <div class="search-input-wrapper">
+        <input type="text" id="countrySearchInput" placeholder="Search for a country...">
+        <div id="suggestions" class="suggestions"></div>
+      </div>
+
+      <!-- VOICE SEARCH BUTTON -->
+      <button id="voiceSearchBtn" class="voice-btn">🎤</button>
+
+      <!-- SEARCH BUTTON -->
+      <button id="countrySearchBtn">Search</button>
+    </div>
+
+    <!-- SEARCH HISTORY -->
+    <div class="history-box">
+      <h3>Recent Searches</h3>
+      <div id="searchHistory" class="history-list"></div>
+      <button id="clearHistoryBtn" class="btn-remove small-btn">Clear History</button>
+    </div>
+
+    <!-- TRENDING COUNTRIES -->
+    <div class="trending-box">
+      <h3>Trending Countries</h3>
+      <div id="trendingCountries" class="card-grid small-cards"></div>
+    </div>
+
+    <!-- GEOLOCATION COUNTRY -->
+    <div class="geo-box">
+      <h3>Your Location</h3>
+      <p id="geoStatus">Detecting your country...</p>
+      <div id="geoCountry" class="card-grid"></div>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div id="countrySearchResults" class="card-grid"></div>
+
+    <!-- MAP MODAL -->
+    <div id="mapModal" class="map-modal">
+      <div class="map-content">
+        <span id="closeMap" class="close-map">&times;</span>
+        <div id="map" class="map"></div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ===============================================
+       NEWS SECTION
+       =============================================== -->
+  <section class="section">
+    <h2>Top News (Wikipedia)</h2>
+    <p class="section-description">Daily trending stories from Wikipedia’s featured feed.</p>
+    <div id="news-container" class="card-grid"></div>
+  </section>
+
+  <!-- ===============================================
+       ATTRACTIONS SECTION
+       =============================================== -->
+  <section class="section">
+    <h2>Popular Attractions</h2>
+    <p class="section-description">Explore iconic places from around the world.</p>
+    <div id="attractions-container" class="card-grid"></div>
+  </section>
+
+</main>
+
+
+<footer class="main-footer">
+  <p>© 2025 World Explorer</p>
+</footer>
+
+<script type="module" src="./js/app.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</body>
 </html>

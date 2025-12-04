@@ -44,3 +44,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     </section>
   `;
 });
+
+/* ------------------------------
+   Placeholder exports needed
+   for apis.js (NO ERRORS)
+--------------------------------*/
+
+export function loadAttractions() {
+  console.warn("loadAttractions() not implemented yet.");
+}
+
+export function renderAttractions() {
+  console.warn("renderAttractions() not implemented yet.");
+}

@@ -1,33 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saved Countries - World Explorer</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <meta charset="UTF-8">
+  <title>Favorites</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
+
 </head>
-
 <body>
-  <header class="main-header">
-    <h1>World Explorer</h1>
-  </header>
 
-  <main id="app">
-    <section class="favorites-header">
-      <h2>Your Saved Countries</h2>
-      <p>Countries you have marked as favorites appear here.</p>
+<header class="main-header">
+  <div class="header-content">
+    <img src="./assets/images/explorer_logo.png" alt="World Explorer Logo" class="site-logo">
+  <h1>WORLD EXPLORER</h1>
+   <!-- DARK MODE TOGGLE -->
+    <label class="theme-toggle">
+      <input type="checkbox" id="themeSwitch">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="compare.html">Compare</a>
+    <a href="favorites.html">Favorites</a>
+  </nav>
+</header>
+
+<main class="section">
+    <!-- COUNTRY SEARCH SECTION -->
+    <section class="section">
+        <h2>Search for a Country</h2>
+        <p class="section-description">Find details for any country in the world.</p>
+
+    <div class="search-section">
+        <input type="text" id="countrySearchInput" placeholder="Search for a country...">
+        <button id="countrySearchBtn">Search</button>
+    </div>
+
+    <div id="countrySearchResults" class="card-grid"></div>
     </section>
 
-    <section id="favoritesList" class="card-grid"></section>
-  </main>
+        <h2>Saved Favorites</h2>
+        <p class="section-description">Your saved attractions, news items, and discoveries.</p>
 
-  <footer class="main-footer">
-    <p>© 2025 World Explorer</p>
-  </footer>
-  <div id="favorites-list"></div>
-  <script type="module" src="./assets/js/app.js"></script>
-  <script type="module" src="./assets/js/favorites.js"></script>
+    <div id="favorites-list" class="card-grid"></div>
+</main>
+
+<footer class="main-footer">
+  <p>© 2025 World Explorer</p>
+</footer>
+
+<script type="module" src="./js/app.js"></script>
 </body>
 </html>

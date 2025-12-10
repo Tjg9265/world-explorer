@@ -836,3 +836,96 @@ body.dark-mode #compare-btn {
 body.dark-mode a {
   color: #8bc7ff;
 }
+
+/* Week 7 Task Section */
+.week7-container {
+  background: #f8f5ee;
+  border: 2px solid #0B1D36;
+  border-radius: 14px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.week7-title {
+  font-size: 1.4rem;
+  color: #0B1D36;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.week7-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.task-card {
+  background: white;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  border-left: 6px solid #C6A667;
+  font-size: 1rem;
+  color: #0B1D36;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.task-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.18);
+}
+
+@media (max-width: 500px) {
+  .week7-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .task-card {
+    font-size: 0.95rem;
+  }
+}
+
+/* Screen reader-only text (for accessibility labels) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 400px) {
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-section input {
+    width: 100%;
+  }
+
+  .voice-btn,
+  #countrySearchBtn {
+    width: 100%;
+  }
+}
+
+.map-modal.show {
+  display: flex;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+

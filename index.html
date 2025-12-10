@@ -3,23 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>World Explorer – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 
 <body>
-
 <header class="main-header">
   <!-- DARK MODE TOGGLE -->
-  <label class="theme-toggle">
-    <input type="checkbox" id="themeSwitch">
+  <label class="theme-toggle" for="themeSwitch">
+    <input 
+      type="checkbox" 
+      id="themeSwitch" 
+      role="switch" 
+      aria-label="Toggle dark mode">
     <span class="slider"></span>
   </label>
 
   <!-- CENTERED BRAND -->
   <div class="header-brand">
-    <img src="./assets/images/explorer_logo.png" class="site-logo" alt="Logo">
+    <img 
+      src="./assets/images/explorer_logo.png" 
+      class="site-logo" 
+      alt="World Explorer logo">
     <h1>WORLD EXPLORER</h1>
   </div>
 
@@ -31,92 +38,141 @@
   </div>
 
   <!-- NAV -->
-  <nav class="main-nav">
-    <a href="index.html">Home</a>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="index.html" aria-current="page">Home</a>
     <a href="compare.html">Compare</a>
     <a href="favorites.html">Favorites</a>
   </nav>
 </header>
 
-
 <main>
-
   <!-- ===============================================
-       COUNTRY SEARCH SECTION  (ONE PLACE ONLY)
+       COUNTRY SEARCH SECTION
        =============================================== -->
-  <section class="section">
-    <h2>Search for a Country</h2>
+  <section class="section" aria-labelledby="country-search-title">
+    <h2 id="country-search-title">Search for a Country</h2>
     <p class="section-description">Find details for any country in the world.</p>
 
     <div class="search-section search-wrapper">
-
       <!-- SEARCH INPUT + SUGGESTIONS -->
       <div class="search-input-wrapper">
-        <input type="text" id="countrySearchInput" placeholder="Search for a country...">
-        <div id="suggestions" class="suggestions"></div>
+        <label class="sr-only" for="countrySearchInput">Search for a country</label>
+        <input 
+          type="text" 
+          id="countrySearchInput" 
+          placeholder="Search for a country..." 
+          autocomplete="off">
+        <div id="suggestions" class="suggestions" aria-live="polite"></div>
       </div>
 
       <!-- VOICE SEARCH BUTTON -->
-      <button id="voiceSearchBtn" class="voice-btn">🎤</button>
+      <button 
+        id="voiceSearchBtn" 
+        class="voice-btn" 
+        type="button" 
+        aria-label="Search by voice">
+        🎤
+      </button>
 
       <!-- SEARCH BUTTON -->
-      <button id="countrySearchBtn">Search</button>
+      <button 
+        id="countrySearchBtn" 
+        type="button">
+        Search
+      </button>
     </div>
 
     <!-- SEARCH HISTORY -->
-    <div class="history-box">
-      <h3>Recent Searches</h3>
-      <div id="searchHistory" class="history-list"></div>
-      <button id="clearHistoryBtn" class="btn-remove small-btn">Clear History</button>
-    </div>
+    <section class="history-box" aria-labelledby="recent-searches-title">
+      <h3 id="recent-searches-title">Recent Searches</h3>
+      <div id="searchHistory" class="history-list" aria-live="polite"></div>
+      <button 
+        id="clearHistoryBtn" 
+        class="btn-remove small-btn" 
+        type="button">
+        Clear History
+      </button>
+    </section>
 
     <!-- TRENDING COUNTRIES -->
-    <div class="trending-box">
-      <h3>Trending Countries</h3>
+    <section class="trending-box" aria-labelledby="trending-countries-title">
+      <h3 id="trending-countries-title">Trending Countries</h3>
       <div id="trendingCountries" class="card-grid small-cards"></div>
-    </div>
+    </section>
 
     <!-- GEOLOCATION COUNTRY -->
-    <div class="geo-box">
-      <h3>Your Location</h3>
+    <section class="geo-box" aria-labelledby="your-location-title">
+      <h3 id="your-location-title">Your Location</h3>
       <p id="geoStatus">Detecting your country...</p>
       <div id="geoCountry" class="card-grid"></div>
-    </div>
+    </section>
 
     <!-- SEARCH RESULTS -->
-    <div id="countrySearchResults" class="card-grid"></div>
+    <section aria-label="Search results">
+      <div id="countrySearchResults" class="card-grid"></div>
+    </section>
 
     <!-- MAP MODAL -->
-    <div id="mapModal" class="map-modal">
+    <div 
+      id="mapModal" 
+      class="map-modal" 
+      role="dialog" 
+      aria-modal="true" 
+      aria-labelledby="mapDialogTitle" 
+      aria-hidden="true">
       <div class="map-content">
-        <span id="closeMap" class="close-map">&times;</span>
-        <div id="map" class="map"></div>
+        <div class="map-header">
+          <h2 id="mapDialogTitle" class="sr-only">Country map</h2>
+          <button 
+            id="closeMap" 
+            class="close-map" 
+            type="button" 
+            aria-label="Close map">
+            &times;
+          </button>
+        </div>
+        <div id="map" class="map" role="region" aria-label="Interactive map"></div>
       </div>
     </div>
-
   </section>
-
 
   <!-- ===============================================
        NEWS SECTION
        =============================================== -->
-  <section class="section">
-    <h2>Top News (Wikipedia)</h2>
+  <section class="section" aria-labelledby="news-title">
+    <h2 id="news-title">Top News (Wikipedia)</h2>
     <p class="section-description">Daily trending stories from Wikipedia’s featured feed.</p>
-    <div id="news-container" class="card-grid"></div>
+    <div id="news-container" class="card-grid" aria-live="polite"></div>
   </section>
 
   <!-- ===============================================
        ATTRACTIONS SECTION
        =============================================== -->
-  <section class="section">
-    <h2>Popular Attractions</h2>
+  <section class="section" aria-labelledby="attractions-title">
+    <h2 id="attractions-title">Popular Attractions</h2>
     <p class="section-description">Explore iconic places from around the world.</p>
-    <div id="attractions-container" class="card-grid"></div>
+    <div id="attractions-container" class="card-grid" aria-live="polite"></div>
   </section>
 
-</main>
+  <!-- ===============================================
+       WEEK 7 TASKS (for you)
+       =============================================== -->
+  <section 
+    class="week7-container section" 
+    aria-labelledby="week7-title">
+    <h2 id="week7-title" class="week7-title">Week 7 Tasks</h2>
 
+    <div class="week7-list">
+      <div class="task-card">Apply final styling (navy header/footer, colors, fonts)</div>
+      <div class="task-card">Test layouts on mobile and desktop</div>
+      <div class="task-card">Fix all bugs</div>
+      <div class="task-card">Clean up code (modules, comments)</div>
+      <div class="task-card">Run accessibility checks</div>
+      <div class="task-card">Final deployment</div>
+      <div class="task-card">Final submission prep</div>
+    </div>
+  </section>
+</main>
 
 <footer class="main-footer">
   <p>© 2025 World Explorer</p>
@@ -124,6 +180,5 @@
 
 <script type="module" src="./js/app.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 </body>
 </html>

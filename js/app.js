@@ -4,6 +4,8 @@
 
 import { initAPIs } from "./apis.js";
 import { renderFavorites } from "./favorites.js";
+import { getWikiNews, renderNews } from "./news.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("%cWorld Explorer Loaded", "color:#3a7; font-weight:bold;");

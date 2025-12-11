@@ -4,6 +4,23 @@
 
 import { addFavorite } from "./favorites.js";
 
+// Fix for non-sovereign UK nations not found in REST Countries API
+function normalizeCountryQuery(name) {
+  const n = name.trim().toLowerCase();
+
+  const map = {
+    "england": "united kingdom",
+    "scotland": "united kingdom",
+    "wales": "united kingdom",
+    "northern ireland": "united kingdom",
+    "great britain": "united kingdom",
+    "britain": "united kingdom",
+    "uk": "united kingdom"
+  };
+
+  return map[n] || name;
+}
+
 export async function initCountrySearch() {
   // -------------------------------------------------
   // 1. EARLY EXIT — Only run on pages that have search UI
@@ -200,7 +217,11 @@ export async function initCountrySearch() {
   });
 
   function searchCountry() {
-    const term = input.value.trim().toLowerCase();
+    let term = input.value.trim().toLowerCase();
+
+    // Normalize UK subregions (England, Scotland, etc.)
+    term = normalizeCountryQuery(term).toLowerCase();
+
     if (!term) return;
 
     if (suggestions) suggestions.style.display = "none";

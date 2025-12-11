@@ -1,77 +1,89 @@
 // ===============================
-// WIKIPEDIA NEWS FEED (Week 6)
+// WIKIPEDIA NEWS FEED (Working Version)
 // ===============================
 
-// Fetch Featured News from Wikimedia API
+// Fetch Featured News from *Wikipedia REST API* (CORS-Friendly)
 export async function getWikiNews() {
   const today = new Date();
   const y = today.getFullYear();
   const m = String(today.getMonth() + 1).padStart(2, "0");
   const d = String(today.getDate()).padStart(2, "0");
 
-  // Using api_user_agent instead of forbidden User-Agent header
-  const url = `https://api.wikimedia.org/feed/v1/wikipedia/en/featured/${y}/${m}/${d}?api_user_agent=BYUI-WorldExplorer`;
+  // ✔ This endpoint works — NO CORS ERRORS
+  const url = `https://en.wikipedia.org/api/rest_v1/feed/featured/${y}/${m}/${d}`;
 
-  const response = await fetch(url);
-  if (!response.ok) throw new Error("Wikipedia API Error");
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Wikipedia API Error");
 
-  const data = await response.json();
-  const items = data.news || [];
+    const data = await response.json();
+    const items = data.news || [];
 
-  // Fallback if no news available for today
-  if (items.length === 0) {
+    if (!items.length) {
+      return [{
+        id: "news-none",
+        title: "No Featured News Today",
+        summary: "Wikipedia has not published today's featured stories.",
+        url: "https://en.wikipedia.org/wiki/Portal:Current_events",
+        thumbnail:
+          "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg"
+      }];
+    }
+
+    return items.map((item, i) => {
+      const cleanSummary = stripHtml(item.story || "");
+      const summary =
+        cleanSummary.length > 200
+          ? cleanSummary.slice(0, cleanSummary.lastIndexOf(" ", 200)) + "..."
+          : cleanSummary;
+
+      return {
+        id: `news-${i}`,
+        title: item.titles?.normalized || `Wikipedia News #${i + 1}`,
+        summary,
+        url: item.links?.[0]?.url || "https://en.wikipedia.org/wiki/Portal:Current_events",
+        thumbnail:
+          item.thumbnail?.source ||
+          "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg"
+      };
+    });
+  } catch (err) {
+    console.error("News API Error:", err);
     return [{
-      id: "news-none",
-      title: "No news available today",
-      summary: "Wikipedia has not published today's featured news yet.",
+      id: "news-error",
+      title: "Unable to load news",
+      summary: "There was an error fetching the Wikipedia news feed.",
       url: "https://en.wikipedia.org/wiki/Portal:Current_events",
       thumbnail:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/120px-Wikipedia-logo-v2.svg.png"
+        "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg"
     }];
   }
-
-  return items.map((item, i) => {
-    const clean = stripHtml(item.story);
-
-    // Safer summary slicing
-    const short =
-      clean.length > 200
-        ? clean.slice(0, clean.lastIndexOf(" ", 200)) + "..."
-        : clean;
-
-    return {
-      id: `news-${i}`,
-      title: `Wikipedia News #${i + 1}`,
-      summary: short,
-      url: "https://en.wikipedia.org/wiki/Portal:Current_events",
-      thumbnail:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/120px-Wikipedia-logo-v2.svg.png"
-    };
-  });
 }
 
+// Render news cards
 export function renderNews(newsArray) {
   const container = document.querySelector("#news-container");
-  container.innerHTML = "";
+  if (!container) return;
 
-  newsArray.forEach(item => {
-    const card = `
+  container.innerHTML = newsArray
+    .map(item => `
       <div class="card fade-in">
         <img 
           src="${item.thumbnail}" 
           alt="Wikipedia news thumbnail" 
           loading="lazy" 
           class="card-img">
+
         <h3>${item.title}</h3>
         <p>${item.summary}</p>
+
         <div class="card-footer">
           <a href="${item.url}" target="_blank" rel="noopener noreferrer">Read More</a>
           <button class="fav-btn" data-id="${item.id}">❤️</button>
         </div>
       </div>
-    `;
-    container.innerHTML += card;
-  });
+    `)
+    .join("");
 }
 
 function stripHtml(html) {

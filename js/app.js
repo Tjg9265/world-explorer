@@ -126,4 +126,31 @@ function initKeyboardAccessibility() {
       items[focusIndex].click();
     }
   });
+// ===================================================
+// COUNTRY SEARCH: Redirect to country.html
+// ===================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("countrySearchInput");
+  const button = document.getElementById("countrySearchBtn");
+
+  if (!input || !button) return; // Only run on index.html
+
+  function runSearch() {
+    const query = input.value.trim();
+    if (query.length > 0) {
+      window.location.href = `country.html?country=${encodeURIComponent(query)}`;
+    }
+  }
+
+  // Click search button
+  button.addEventListener("click", runSearch);
+
+  // Press Enter in input
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      runSearch();
+    }
+  });
+});
+
 }

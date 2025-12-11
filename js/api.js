@@ -1,23 +1,35 @@
+// =======================================
+// NEWS + WIKI API MODULE
+// =======================================
+
+// Import only once — FIXED
 import { addFavorite } from "./favorites.js";
 
-// 🔍 NEW FUNCTION — Needed for COUNTRY + COMPARE
+// Basic sanitization so HTML never breaks
+function clean(str) {
+  return String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// ---------------------------------------
+// Get Wikipedia summary for Compare + Details
+// ---------------------------------------
 export async function getWikiSummary(title) {
-  const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
-    title
-  )}`;
+  const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
 
   try {
     const response = await fetch(url);
     if (!response.ok) return null;
-    const data = await response.json();
-    return data;
+
+    return await response.json();
   } catch (err) {
     console.error("Wiki Summary Error:", err);
     return null;
   }
 }
 
-// 📰 WIKIPEDIA NEWS FEED
+// ---------------------------------------
+// WIKIPEDIA FEATURED NEWS
+// ---------------------------------------
 export async function getWikiNews() {
   const today = new Date();
   const y = today.getFullYear();
@@ -26,54 +38,85 @@ export async function getWikiNews() {
 
   const url = `https://api.wikimedia.org/feed/v1/wikipedia/en/featured/${y}/${m}/${d}`;
 
-  const response = await fetch(url, {
-    headers: { "User-Agent": "BYUI-WorldExplorer/1.0" }
-  });
+  try {
+    const response = await fetch(url, {
+      headers: { "User-Agent": "BYUI-WorldExplorer/1.0" }
+    });
 
-  if (!response.ok) throw new Error("Wiki error");
+    if (!response.ok) throw new Error("Wikipedia News Error");
 
-  const data = await response.json();
-  const items = data.news || [];
+    const data = await response.json();
+    const items = data.news || [];
 
-  return items.map((n, i) => ({
-    id: `news-${i}`,
-    title: `Wikipedia News #${i + 1}`,
-    summary: strip(n.story).slice(0, 200) + "...",
-    img: "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg",
-    link: "https://en.wikipedia.org/wiki/Portal:Current_events"
-  }));
+    return items.map((n, i) => ({
+      id: `news-${i}`,
+      title: clean(`Wikipedia News #${i + 1}`),
+      summary: clean(strip(n.story || "").slice(0, 200) + "..."),
+      img: "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg",
+      link: "https://en.wikipedia.org/wiki/Portal:Current_events"
+    }));
+  } catch (err) {
+    console.error("News API Error:", err);
+    return [];
+  }
 }
 
+/// ---------------------------------------
+// RENDER NEWS CARDS (SAFE VERSION)
+// ---------------------------------------
 export function renderNews(list) {
   const container = document.querySelector("#news-container");
+  if (!container) return;   // 🔥 Prevents crash on pages without news section
+
+  if (!list.length) {
+    container.innerHTML = "<p>Unable to load news.</p>";
+    return;
+  }
+
   container.innerHTML = list
-    .map(
-      (n) => `
-    <div class="card fade-in">
-      <img src="${n.img}" class="card-img" />
-      <h3>${n.title}</h3>
-      <p>${n.summary}</p>
-      <div class="card-footer">
-        <a href="${n.link}" target="_blank">Read More</a>
-        <button class="btn-fav" data-id="${n.id}">❤️ Save</button>
+    .map(n => `
+      <div class="card fade-in">
+        <img 
+          src="${n.img}" 
+          class="card-img" 
+          loading="lazy"
+          alt="Wikipedia news thumbnail">
+
+        <h3>${n.title}</h3>
+        <p>${n.summary}</p>
+
+        <div class="card-footer">
+          <a href="${n.link}" target="_blank" rel="noopener">Read More</a>
+          <button 
+            class="btn-fav" 
+            data-id="${n.id}" 
+            type="button">
+            ❤️ Save
+          </button>
+        </div>
       </div>
-    </div>
-    `
-    )
+    `)
     .join("");
 
-  document.querySelectorAll(".btn-fav").forEach((btn) =>
+  // Favorite buttons
+  container.querySelectorAll(".btn-fav").forEach(btn => {
     btn.addEventListener("click", () => {
-      const item = list.find((n) => n.id === btn.dataset.id);
+      const item = list.find(n => n.id === btn.dataset.id);
+      if (!item) return;
+
       addFavorite({
         id: item.id,
         name: item.title,
         img: item.img
       });
-    })
-  );
+    });
+  });
 }
 
+
+// ---------------------------------------
+// Strip HTML Tags
+// ---------------------------------------
 function strip(html) {
   const div = document.createElement("div");
   div.innerHTML = html;

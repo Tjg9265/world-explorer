@@ -1,74 +1,104 @@
-// ================================
-// 1. WIKIPEDIA COMPARE TOOL
-// ================================
+// =======================================
+// COUNTRY COMPARISON MODULE
+// - Wikipedia Summary Compare
+// - RESTCountries Data Compare
+// =======================================
+
 import { getWikiSummary } from "./api.js";
 
+// Sanitization helper
+function clean(str) {
+  return String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// =======================================
+// 1. WIKIPEDIA COMPARE TOOL
+// =======================================
 document.addEventListener("DOMContentLoaded", () => {
-  const wikiBtn = document.getElementById("compareBtn");
+  const btn = document.getElementById("compareBtn");
+  if (!btn) return;
 
-  if (wikiBtn) {
-    wikiBtn.addEventListener("click", async () => {
-      const a = document.getElementById("compareA").value.trim();
-      const b = document.getElementById("compareB").value.trim();
+  btn.addEventListener("click", async () => {
+    const a = document.getElementById("compareA").value.trim();
+    const b = document.getElementById("compareB").value.trim();
 
-      if (!a || !b) {
-        alert("Please enter two countries.");
-        return;
-      }
+    if (!a || !b) {
+      alert("Please enter two countries.");
+      return;
+    }
 
-      const dataA = await getWikiSummary(a);
-      const dataB = await getWikiSummary(b);
+    const dataA = await getWikiSummary(a);
+    const dataB = await getWikiSummary(b);
 
-      if (!dataA || !dataB) {
-        document.getElementById("compareContainer").innerHTML =
-          "<p>One or both countries were not found.</p>";
-        return;
-      }
+    const container = document.getElementById("compareContainer");
 
-      document.getElementById("compareContainer").innerHTML = `
-        <div class="compare-card">
-          <h3>${dataA.title}</h3>
-          <img src="${dataA.thumbnail?.source || ""}" alt="${dataA.title}">
-          <p>${dataA.extract}</p>
-        </div>
+    if (!dataA || !dataB) {
+      container.innerHTML = "<p>One or both countries were not found.</p>";
+      return;
+    }
 
-        <div class="compare-card">
-          <h3>${dataB.title}</h3>
-          <img src="${dataB.thumbnail?.source || ""}" alt="${dataB.title}">
-          <p>${dataB.extract}</p>
-        </div>
-      `;
-    });
-  }
+    const titleA = clean(dataA.title);
+    const titleB = clean(dataB.title);
+
+    container.innerHTML = `
+      <div class="compare-card fade-in">
+        <h3>${titleA}</h3>
+        <img src="${dataA.thumbnail?.source || ""}" 
+             alt="${titleA}" loading="lazy">
+        <p>${clean(dataA.extract)}</p>
+      </div>
+
+      <div class="compare-card fade-in">
+        <h3>${titleB}</h3>
+        <img src="${dataB.thumbnail?.source || ""}" 
+             alt="${titleB}" loading="lazy">
+        <p>${clean(dataB.extract)}</p>
+      </div>
+    `;
+  });
 });
 
-// ================================
+// =======================================
 // 2. REST COUNTRIES COMPARE TOOL
-// ================================
+// =======================================
 export async function initCompareTool() {
   const selectA = document.querySelector("#countryA");
   const selectB = document.querySelector("#countryB");
   const btn = document.querySelector("#compare-btn");
 
-  // Only run if the dropdowns exist on this page
+  // Only run on compare.html
   if (!selectA || !selectB || !btn) return;
 
-  // Load countries
-  const countries = await fetch("https://restcountries.com/v3.1/all")
-    .then(r => r.json());
+  // Fetch countries (FIXED ENDPOINT)
+  let countries = [];
+  try {
+    countries = await fetch(
+      "https://restcountries.com/v3.1/all?fields=name,cca2,flags,capital,region,population"
+    ).then(r => r.json());
+  } catch (err) {
+    console.error("Failed to load country list.", err);
+    return;
+  }
 
+  if (!countries.length) {
+    console.error("Country list is empty.");
+    return;
+  }
+
+  // Sort alphabetically
   const sorted = countries.sort((a, b) =>
     a.name.common.localeCompare(b.name.common)
   );
 
   // Populate dropdowns
-  sorted.forEach(c => {
-    const option = `<option value="${c.cca2}">${c.name.common}</option>`;
-    selectA.innerHTML += option;
-    selectB.innerHTML += option;
-  });
+  const optionsHtml = sorted
+    .map(c => `<option value="${c.cca2}">${clean(c.name.common)}</option>`)
+    .join("");
 
-  // Compare button
+  selectA.innerHTML += optionsHtml;
+  selectB.innerHTML += optionsHtml;
+
+  // Compare button action
   btn.addEventListener("click", () => compareCountries(sorted));
 }
 
@@ -87,18 +117,21 @@ function compareCountries(list) {
 
   output.innerHTML = `
     <div class="compare-card fade-in">
-      <h3>${A.name.common}</h3>
-      <img src="${A.flags.png}" class="flag">
+      <h3>${clean(A.name.common)}</h3>
+      <img src="${A.flags.png}" class="flag" loading="lazy"
+           alt="Flag of ${clean(A.name.common)}">
       <p>Population: ${A.population.toLocaleString()}</p>
-      <p>Capital: ${A.capital?.[0] || "N/A"}</p>
-      <p>Region: ${A.region}</p>
+      <p>Capital: ${clean(A.capital?.[0] || "N/A")}</p>
+      <p>Region: ${clean(A.region)}</p>
     </div>
+
     <div class="compare-card fade-in">
-      <h3>${B.name.common}</h3>
-      <img src="${B.flags.png}" class="flag">
+      <h3>${clean(B.name.common)}</h3>
+      <img src="${B.flags.png}" class="flag" loading="lazy"
+           alt="Flag of ${clean(B.name.common)}">
       <p>Population: ${B.population.toLocaleString()}</p>
-      <p>Capital: ${B.capital?.[0] || "N/A"}</p>
-      <p>Region: ${B.region}</p>
+      <p>Capital: ${clean(B.capital?.[0] || "N/A")}</p>
+      <p>Region: ${clean(B.region)}</p>
     </div>
   `;
 }

@@ -1,108 +1,100 @@
+// ===================================================
+// MAIN APP INITIALIZATION
+// ===================================================
+
 import { initAPIs } from "./apis.js";
 import { renderFavorites } from "./favorites.js";
 
-/**
- * ==================================================
- * MAIN APP INITIALIZATION
- * ==================================================
- */
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("World Explorer Loaded");
+  console.log("%cWorld Explorer Loaded", "color:#3a7; font-weight:bold;");
 
-  // Run all API loading for homepage
+  // Homepage → load APIs (news, compare, search)
   safeInit(initAPIs);
 
-  // Favorites page logic
+  // Favorites page
   if (document.querySelector("#favorites-list")) {
     safeInit(renderFavorites);
   }
 
-  // Initialize UI Systems
+  // Global UI Systems
   initDarkMode();
   initModalSystem();
   initKeyboardAccessibility();
 });
 
 
-/**
- * ==================================================
- * SAFE WRAPPER FOR API MODULE FUNCTIONS
- * Prevents UI crashes if an API call fails
- * ==================================================
- */
+// ===================================================
+// SAFE WRAPPER — Prevents UI crashes
+// ===================================================
 function safeInit(fn) {
   try {
     fn();
   } catch (err) {
-    console.warn("Module failed:", fn.name, err);
+    console.warn(`Module failed: ${fn.name}`, err);
   }
 }
 
 
-/**
- * ==================================================
- * DARK MODE HANDLER
- * ==================================================
- */
+// ===================================================
+// DARK MODE SYSTEM
+// ===================================================
 function initDarkMode() {
-  const themeSwitch = document.querySelector("#themeSwitch");
-  if (!themeSwitch) return;
+  const toggle = document.querySelector("#themeSwitch");
+  if (!toggle) return;
 
+  // Load previously saved theme
   const saved = localStorage.getItem("darkMode");
-
   if (saved === "on") {
     document.body.classList.add("dark-mode");
-    themeSwitch.checked = true;
+    toggle.checked = true;
   }
 
-  themeSwitch.addEventListener("change", () => {
-    const isDark = themeSwitch.checked;
-    document.body.classList.toggle("dark-mode", isDark);
-    localStorage.setItem("darkMode", isDark ? "on" : "off");
+  toggle.addEventListener("change", () => {
+    const enabled = toggle.checked;
+    document.body.classList.toggle("dark-mode", enabled);
+    localStorage.setItem("darkMode", enabled ? "on" : "off");
   });
 }
 
 
-/**
- * ==================================================
- * MAP MODAL IMPROVED SYSTEM
- * Proper fade-in/out and ARIA updates
- * ==================================================
- */
+// ===================================================
+// MAP MODAL SYSTEM
+// Handles accessibility + animations
+// ===================================================
 function initModalSystem() {
   const modal = document.querySelector("#mapModal");
   const closeBtn = document.querySelector("#closeMap");
+
   if (!modal || !closeBtn) return;
 
-  // Handle ESC key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMapModal();
-  });
-
-  closeBtn.addEventListener("click", closeMapModal);
-
+  // Close modal
   function closeMapModal() {
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
-    setTimeout(() => (modal.style.display = "none"), 200);
+    setTimeout(() => (modal.style.display = "none"), 180);
   }
 
-  // Allow other modules to open modal globally
+  // Allow modules like countrySearch to open modal safely
   window.openMapModal = () => {
     modal.style.display = "flex";
     modal.classList.add("show");
     modal.setAttribute("aria-hidden", "false");
   };
+
+  // Close button
+  closeBtn.addEventListener("click", closeMapModal);
+
+  // ESC key support
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMapModal();
+  });
 }
 
 
-/**
- * ==================================================
- * KEYBOARD ACCESSIBILITY FIXES
- * ==================================================
- * Lets user navigate cards and suggestions
- * using arrow keys and enter.
- */
+// ===================================================
+// KEYBOARD ACCESSIBILITY ENHANCEMENTS
+// Arrow-key navigation for suggestions
+// ===================================================
 function initKeyboardAccessibility() {
   const suggestions = document.querySelector("#suggestions");
   const searchInput = document.querySelector("#countrySearchInput");
@@ -113,20 +105,20 @@ function initKeyboardAccessibility() {
 
   searchInput.addEventListener("keydown", (e) => {
     const items = suggestions.querySelectorAll("div");
-    if (items.length === 0) return;
+    if (!items.length) return;
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
       focusIndex = (focusIndex + 1) % items.length;
-      items[focusIndex].scrollIntoView({ block: "nearest" });
       items[focusIndex].focus();
+      items[focusIndex].scrollIntoView({ block: "nearest" });
     }
 
     if (e.key === "ArrowUp") {
       e.preventDefault();
       focusIndex = (focusIndex - 1 + items.length) % items.length;
-      items[focusIndex].scrollIntoView({ block: "nearest" });
       items[focusIndex].focus();
+      items[focusIndex].scrollIntoView({ block: "nearest" });
     }
 
     if (e.key === "Enter" && focusIndex >= 0) {

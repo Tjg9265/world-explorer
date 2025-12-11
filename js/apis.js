@@ -1,27 +1,44 @@
-// Central API imports
+// =======================================================
+// Central API Loader for World Explorer
+// Handles: News Feed, Compare Tool, Country Search
+// Called by: app.js
+// =======================================================
+
+// NEWS MODULE
 import { getWikiNews, renderNews } from "./news.js";
 
+// COMPARE TOOL
 import { initCompareTool } from "./compare.js";
+
+// COUNTRY SEARCH
 import { initCountrySearch } from "./countrySearch.js";
 
-
-// Main function called by app.js
+// =======================================================
+// Initialize all external APIs and main features
+// =======================================================
 export async function initAPIs() {
-  // NEWS
+  // -------------------------
+  // 1. Load Wikipedia News
+  // -------------------------
   try {
-    const news = await getWikiNews();
-    renderNews(news);
-  } catch {
+    if (document.querySelector("#news-container")) {
+      const news = await getWikiNews();
+      renderNews(news);
+}
+
+  } catch (err) {
+    console.error("News API failed:", err);
     document.querySelector("#news-container").innerHTML =
       "<p>Unable to load Wikipedia News.</p>";
   }
 
- 
-
-  // COMPARE TOOL
+  // -------------------------
+  // 2. Initialize Compare Tool
+  // -------------------------
   initCompareTool();
 
-  
-   // COUNTRY SEARCH
+  // -------------------------
+  // 3. Initialize Country Search
+  // -------------------------
   initCountrySearch();
 }

@@ -1,24 +1,56 @@
+// =======================================
+// COUNTRY DETAILS PAGE
+// Loads Wikipedia summary for the selected country
+// =======================================
+
 import { getWikiSummary } from "./api.js";
+
+// Simple sanitization for safety
+function sanitize(str) {
+  return String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
   const countryName = params.get("name");
 
-  const data = await getWikiSummary(countryName);
+  // Early return if no name in URL
+  if (!countryName) {
+    document.getElementById("app").innerHTML = "<p>Country not found.</p>";
+    return;
+  }
+
+  let data = null;
+
+  try {
+    data = await getWikiSummary(countryName);
+  } catch (err) {
+    console.error("Wikipedia Summary Error:", err);
+  }
 
   if (!data) {
     document.getElementById("app").innerHTML = "<p>Country not found.</p>";
     return;
   }
 
+  const title = sanitize(data.title || "Unknown Country");
+  const extract = sanitize(data.extract || "No summary available.");
+  const thumbnail = data.thumbnail?.source || "";
+
+  // ==========================
+  // Render Country Details
+  // ==========================
   document.getElementById("app").innerHTML = `
     <section class="country-header">
-      <h2>${data.title}</h2>
-      <img src="${data.thumbnail?.source || ""}" alt="${data.title}">
+      <h2>${title}</h2>
+      <img 
+        src="${thumbnail}" 
+        alt="Country image for ${title}"
+        loading="lazy">
     </section>
 
     <section class="country-info">
-      <p>${data.extract}</p>
+      <p>${extract}</p>
     </section>
 
     <section class="must-see">
@@ -44,16 +76,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     </section>
   `;
 });
-
-/* ------------------------------
-   Placeholder exports needed
-   for apis.js (NO ERRORS)
---------------------------------*/
-
-export function loadAttractions() {
-  console.warn("loadAttractions() not implemented yet.");
-}
-
-export function renderAttractions() {
-  console.warn("renderAttractions() not implemented yet.");
-}

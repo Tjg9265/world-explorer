@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Country Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Explorer – Country Details</title>
 
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
@@ -12,34 +13,66 @@
 
 <header class="main-header">
   <div class="header-content">
-    <img src="./assets/images/explorer_logo.png" class="site-logo" alt="Logo">
+    <img src="./assets/images/explorer_logo.png" class="site-logo" alt="World Explorer Logo">
     <h1>WORLD EXPLORER</h1>
 
-    <!-- DARK MODE -->
-    <label class="theme-toggle">
-      <input type="checkbox" id="themeSwitch">
+    <!-- DARK MODE TOGGLE -->
+    <label class="theme-toggle" for="themeSwitch">
+      <input 
+        type="checkbox" 
+        id="themeSwitch" 
+        role="switch" 
+        aria-label="Toggle dark mode">
       <span class="slider"></span>
     </label>
   </div>
 
-  <nav class="main-nav">
+  <nav class="main-nav" aria-label="Main navigation">
     <a href="index.html">Home</a>
     <a href="compare.html">Compare</a>
     <a href="favorites.html">Favorites</a>
   </nav>
 </header>
 
-
-<!-- THIS IS REQUIRED! -->
+<!-- MAIN CONTENT POPULATED BY country.js -->
 <main id="app"></main>
+
+<!-- ============================
+     LANDMARK IMAGE CARDS
+     (Correctly placed AFTER main content)
+     ============================ -->
+
+<section class="section">
+
+  <!-- BIG BEN -->
+  <div class="card fade-in">
+    <img src="./assets/images/big ben.png" 
+        alt="Big Ben clock tower in London" 
+        loading="lazy" 
+        class="card-img">
+    <h3>Big Ben – London</h3>
+    <p>Historic Gothic Revival clock tower beside the River Thames.</p>
+  </div>
+
+  <!-- PYRAMIDS OF GIZA -->
+  <div class="card fade-in">
+    <img src="./assets/images/pyramids.png" 
+        alt="Great Pyramids of Giza" 
+        loading="lazy" 
+        class="card-img">
+    <h3>Pyramids of Giza – Egypt</h3>
+    <p>Ancient wonders standing tall in the Sahara desert.</p>
+  </div>
+
+</section>
 
 
 <footer class="main-footer">
   <p>© 2025 World Explorer</p>
+  
 </footer>
-
+<script type="module" src="./js/app.js"></script>
 <script type="module" src="./js/country.js"></script>
 
 </body>
 </html>
-

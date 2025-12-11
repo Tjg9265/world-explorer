@@ -1,34 +1,45 @@
 // =======================================
-// FAVORITES MODULE (exported functions)
+// FAVORITES MODULE
 // =======================================
 
+// Safely get favorites from localStorage
 export function getFavorites() {
-  return JSON.parse(localStorage.getItem("favorites") || "[]");
+  try {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  } catch {
+    return [];
+  }
 }
 
+// Save updated list
 export function saveFavorites(list) {
   localStorage.setItem("favorites", JSON.stringify(list));
 }
 
+// Add an item (no duplicates)
 export function addFavorite(item) {
   const favs = getFavorites();
 
-  // prevent duplicates
-  if (favs.some(f => f.id === item.id)) return;
+  if (favs.some(f => f.id === item.id)) return; // Already exists
 
   favs.push(item);
   saveFavorites(favs);
 }
 
+// Remove an item & re-render page
 export function removeFavorite(id) {
-  const newList = getFavorites().filter(f => f.id !== id);
-  saveFavorites(newList);
+  const updated = getFavorites().filter(f => f.id !== id);
+  saveFavorites(updated);
   renderFavorites();
 }
 
+// =======================================
+// DOM RENDERING
+// =======================================
+
 export function renderFavorites() {
   const container = document.querySelector("#favorites-list");
-  if (!container) return; // not on this page
+  if (!container) return; // Not on this page
 
   const favs = getFavorites();
 
@@ -38,31 +49,52 @@ export function renderFavorites() {
   }
 
   container.innerHTML = favs
-    .map(
-      fav => `
-      <div class="card fade-in">
-        <img src="${fav.thumbnail || fav.img || ""}" class="card-img">
-        <h3>${fav.title || fav.name}</h3>
-        <button class="remove-fav" data-id="${fav.id}">Remove</button>
-      </div>
-    `
-    )
+    .map(fav => {
+      const title = sanitize(fav.title || fav.name || "Unknown");
+      const img = fav.thumbnail || fav.img || "";
+
+      return `
+        <div class="card fade-in">
+          <img 
+            src="${img}" 
+            alt="Favorite item: ${title}" 
+            loading="lazy"
+            class="card-img">
+
+          <h3>${title}</h3>
+
+          <button 
+            class="remove-fav" 
+            data-id="${fav.id}"
+            type="button">
+            Remove
+          </button>
+        </div>
+      `;
+    })
     .join("");
 
-  // remove buttons
-  document.querySelectorAll(".remove-fav").forEach(btn => {
+  // Attach remove listeners
+  container.querySelectorAll(".remove-fav").forEach(btn => {
     btn.addEventListener("click", () => removeFavorite(btn.dataset.id));
   });
 }
 
 // =======================================
-// PAGE INITIALIZATION (runs only if page has #favorites-list)
+// Sanitize text to prevent HTML injection
+// =======================================
+function sanitize(text) {
+  return String(text)
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// =======================================
+// AUTO INITIALIZE ON FAVORITES PAGE
 // =======================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  const favoritesList = document.querySelector("#favorites-list");
-
-  if (favoritesList) {
+  if (document.querySelector("#favorites-list")) {
     renderFavorites();
   }
 });

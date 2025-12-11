@@ -2,52 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Favorites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Explorer – Favorites</title>
+
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
-
 </head>
+
 <body>
 
 <header class="main-header">
   <div class="header-content">
     <img src="./assets/images/explorer_logo.png" alt="World Explorer Logo" class="site-logo">
-  <h1>WORLD EXPLORER</h1>
-   <!-- DARK MODE TOGGLE -->
-    <label class="theme-toggle">
-      <input type="checkbox" id="themeSwitch">
+    <h1>WORLD EXPLORER</h1>
+
+    <!-- DARK MODE TOGGLE -->
+    <label class="theme-toggle" for="themeSwitch">
+      <input type="checkbox" id="themeSwitch" role="switch" aria-label="Toggle dark mode">
       <span class="slider"></span>
     </label>
   </div>
-  <nav class="main-nav">
+
+  <!-- NAVIGATION -->
+  <nav class="main-nav" aria-label="Main navigation">
     <a href="index.html">Home</a>
     <a href="compare.html">Compare</a>
-    <a href="favorites.html">Favorites</a>
+    <a href="favorites.html" aria-current="page">Favorites</a>
   </nav>
 </header>
 
-<main class="section">
-    <!-- COUNTRY SEARCH SECTION -->
-    <section class="section">
-        <h2>Search for a Country</h2>
-        <p class="section-description">Find details for any country in the world.</p>
 
-    <div class="search-section">
-        <input type="text" id="countrySearchInput" placeholder="Search for a country...">
-        <button id="countrySearchBtn">Search</button>
+<main class="section">
+
+  <!-- COUNTRY SEARCH -->
+  <section class="section">
+    <h2>Search for a Country</h2>
+    <p class="section-description">Find details for any country in the world.</p>
+
+    <div class="search-section search-wrapper">
+      <div class="search-input-wrapper">
+        <label class="sr-only" for="countrySearchInput">Search for a country</label>
+        <input 
+          type="text" 
+          id="countrySearchInput" 
+          placeholder="Search for a country..."
+          autocomplete="off">
+        <div id="suggestions" class="suggestions" aria-live="polite"></div>
+      </div>
+
+      <button id="countrySearchBtn">Search</button>
     </div>
 
     <div id="countrySearchResults" class="card-grid"></div>
-    </section>
+  </section>
 
-        <h2>Saved Favorites</h2>
-        <p class="section-description">Your saved attractions, news items, and discoveries.</p>
 
-    <div id="favorites-list" class="card-grid"></div>
+  <!-- FAVORITES SECTION -->
+  <h2>Saved Favorites</h2>
+  <p class="section-description">Your saved attractions, news items, and discoveries.</p>
+  <div id="favorites-list" class="card-grid"></div>
+
+
+  <!-- ============================
+       YOUR IMAGE CARDS GO HERE
+       ============================ -->
+
+  <!-- Mountain Path -->
+  <div class="card fade-in">
+    <img src="./assets/images/mountain path.png" 
+         alt="Winding mountain path through green hills" 
+         loading="lazy" 
+         class="card-img">
+    <h3>Mountain Path</h3>
+    <p>A scenic trail through dramatic mountain landscapes.</p>
+  </div>
+
+  <!-- Eiffel Tower -->
+  <div class="card fade-in">
+    <img src="./assets/images/effiel tower.png" 
+         alt="Eiffel Tower in Paris" 
+         loading="lazy" 
+         class="card-img">
+    <h3>Eiffel Tower – Paris</h3>
+    <p>Iconic iron tower offering stunning views of the city.</p>
+  </div>
+
 </main>
+
 
 <footer class="main-footer">
   <p>© 2025 World Explorer</p>
+  
+
 </footer>
 
 <script type="module" src="./js/app.js"></script>
